@@ -1,4 +1,4 @@
-#include "qgeomapreplygooglemaps.h"
+﻿#include "qgeomapreplygooglemaps.h"
 #include <QNetworkAccessManager>
 #include <QNetworkCacheMetaData>
 #include <QDateTime>
@@ -9,8 +9,15 @@ QGeoMapReplyGooglemaps::QGeoMapReplyGooglemaps(QNetworkReply *reply, const QGeoT
         : QGeoTiledMapReply(spec, parent),
         m_reply(reply)
 {
-    connect(m_reply, &QNetworkReply::finished, this, &QGeoMapReplyGooglemaps::networkFinished);
-    connect(m_reply, &QNetworkReply::errorOccurred, this, &QGeoMapReplyGooglemaps::networkError);
+    connect(m_reply,
+            SIGNAL(finished()),
+            this,
+            SLOT(networkFinished()));
+
+    connect(m_reply,
+            SIGNAL(error(QNetworkReply::NetworkError)),
+            this,
+            SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
 QGeoMapReplyGooglemaps::~QGeoMapReplyGooglemaps()

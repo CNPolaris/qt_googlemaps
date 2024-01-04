@@ -1,4 +1,4 @@
-#ifndef QGEOROUTEREPLYORS_H
+﻿#ifndef QGEOROUTEREPLYORS_H
 #define QGEOROUTEREPLYORS_H
 
 #include <QtNetwork/QNetworkReply>
@@ -11,7 +11,7 @@ class QGeoRouteReplyGooglemaps : public QGeoRouteReply
     Q_OBJECT
 
 public:
-//    explicit QGeoRouteReplyGooglemaps(QObject *parent = 0);
+    explicit QGeoRouteReplyGooglemaps(QObject *parent = 0);
     QGeoRouteReplyGooglemaps(QNetworkReply *reply, const QGeoRouteRequest &request, QObject *parent = 0);
     ~QGeoRouteReplyGooglemaps();
 

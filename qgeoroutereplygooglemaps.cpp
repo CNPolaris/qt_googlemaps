@@ -1,4 +1,4 @@
-#include "qgeoroutereplygooglemaps.h"
+﻿#include "qgeoroutereplygooglemaps.h"
 #include <QDebug>
 #include <QGeoRectangle>
 #include <QtCore/QJsonDocument>
@@ -98,8 +98,9 @@ QGeoRouteReplyGooglemaps::QGeoRouteReplyGooglemaps(QNetworkReply *reply, const Q
                                      QObject *parent)
     :   QGeoRouteReply(request, parent), m_reply(reply)
 {
-    connect(m_reply, &QNetworkReply::finished, this, &QGeoRouteReplyGooglemaps::networkReplyFinished);
-    connect(m_reply, &QNetworkReply::errorOccurred, this, &QGeoRouteReplyGooglemaps::networkReplyError);
+    connect(m_reply, SIGNAL(finished()), this, SLOT(networkReplyFinished()));
+    connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+            this, SLOT(networkReplyError(QNetworkReply::NetworkError)));
 }
 
 QGeoRouteReplyGooglemaps::~QGeoRouteReplyGooglemaps()

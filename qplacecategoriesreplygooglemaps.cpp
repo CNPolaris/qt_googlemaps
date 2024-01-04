@@ -1,4 +1,4 @@
-#include "qplacecategoriesreplygooglemaps.h"
+﻿#include "qplacecategoriesreplygooglemaps.h"
 
 QPlaceCategoriesReplyGooglemaps::QPlaceCategoriesReplyGooglemaps(QObject *parent)
 :   QPlaceReply(parent)
@@ -18,5 +18,5 @@ void QPlaceCategoriesReplyGooglemaps::emitFinished()
 void QPlaceCategoriesReplyGooglemaps::setError(QPlaceReply::Error errorCode, const QString &errorString)
 {
     QPlaceReply::setError(errorCode, errorString);
-    emit errorOccurred(errorCode, errorString);
+    emit error(errorCode, errorString);
 }

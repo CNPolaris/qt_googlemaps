@@ -1,4 +1,4 @@
-#include "qplacesearchreplygooglemaps.h"
+﻿#include "qplacesearchreplygooglemaps.h"
 #include "qplacemanagerenginegooglemaps.h"
 
 #include <QtCore/QJsonDocument>
@@ -26,7 +26,8 @@ QPlaceSearchReplyGooglemaps::QPlaceSearchReplyGooglemaps(const QPlaceSearchReque
         return;
 
     m_reply->setParent(this);
-    connect(m_reply, &QNetworkReply::finished, this, &QPlaceSearchReplyGooglemaps::replyFinished);
+
+    connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinished()));
 }
 
 QPlaceSearchReplyGooglemaps::~QPlaceSearchReplyGooglemaps()
@@ -42,7 +43,7 @@ void QPlaceSearchReplyGooglemaps::abort()
 void QPlaceSearchReplyGooglemaps::setError(QPlaceReply::Error errorCode, const QString &errorString)
 {
     QPlaceReply::setError(errorCode, errorString);
-    emit errorOccurred(errorCode, errorString);
+    emit error(errorCode, errorString);
     setFinished(true);
     emit finished();
 }
@@ -167,7 +168,7 @@ QPlaceResult QPlaceSearchReplyGooglemaps::parsePlaceResult(const QJsonObject &it
     QGeoLocation location;
     location.setCoordinate(coordinate);
     location.setAddress(address);
-    location.setBoundingShape(parseBoundingBox(item.value(QStringLiteral("boundingbox")).toArray()));
+    location.setBoundingBox(parseBoundingBox(item.value(QStringLiteral("boundingbox")).toArray()));
 
     place.setLocation(location);
 

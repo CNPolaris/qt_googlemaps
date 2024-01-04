@@ -1,4 +1,4 @@
-#include "qgeoroutingmanagerenginegooglemaps.h"
+﻿#include "qgeoroutingmanagerenginegooglemaps.h"
 #include "qgeoroutereplygooglemaps.h"
 
 #include <QtCore/QUrlQuery>
@@ -36,7 +36,7 @@ QGeoRouteReply* QGeoRoutingManagerEngineGooglemaps::calculateRoute(const QGeoRou
 
     if (m_apiKey.isEmpty()) {
         QGeoRouteReply *reply = new QGeoRouteReply(QGeoRouteReply::UnsupportedOptionError, "Set googlemaps.route.apikey with google maps application key, supporting directions", this);
-        emit errorOccurred(reply, reply->error(), reply->errorString());
+        emit error(reply, reply->error(), reply->errorString());
         return reply;
     }
 
@@ -108,8 +108,9 @@ QGeoRouteReply* QGeoRoutingManagerEngineGooglemaps::calculateRoute(const QGeoRou
 
     QGeoRouteReplyGooglemaps *routeReply = new QGeoRouteReplyGooglemaps(reply, request, this);
 
-    connect(routeReply, &QGeoRouteReplyGooglemaps::finished, this, &QGeoRoutingManagerEngineGooglemaps::replyFinished);
-    connect(routeReply, &QGeoRouteReplyGooglemaps::errorOccurred, this, &QGeoRoutingManagerEngineGooglemaps::replyError);
+    connect(routeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
+    connect(routeReply, SIGNAL(error(QGeoRouteReply::Error,QString)),
+            this, SLOT(replyError(QGeoRouteReply::Error,QString)));
 
     return routeReply;
 }
@@ -126,5 +127,5 @@ void QGeoRoutingManagerEngineGooglemaps::replyError(QGeoRouteReply::Error errorC
 {
     QGeoRouteReply *reply = qobject_cast<QGeoRouteReply *>(sender());
     if (reply)
-        emit errorOccurred(reply, errorCode, errorString);
+        emit error(reply, errorCode, errorString);
 }

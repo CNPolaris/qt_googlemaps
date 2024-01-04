@@ -1,4 +1,4 @@
-#include "QtLocation/private/qgeocameracapabilities_p.h"
+﻿#include "QtLocation/private/qgeocameracapabilities_p.h"
 #include "qgeotiledmappingmanagerenginegooglemaps.h"
 #include "qgeotiledmapgooglemaps.h"
 #include "qgeotilefetchergooglemaps.h"
@@ -32,6 +32,9 @@ QGeoTiledMappingManagerEngineGooglemaps::QGeoTiledMappingManagerEngineGooglemaps
     QGeoCameraCapabilities capabilities;
     capabilities.setMinimumZoomLevel(0.0);
     capabilities.setMaximumZoomLevel(21.0);
+    capabilities.setSupportsBearing(true);
+    capabilities.setSupportsTilting(true);
+    capabilities.setOverzoomEnabled(true);
 
     setCameraCapabilities(capabilities);
 
@@ -62,23 +65,17 @@ QGeoTiledMappingManagerEngineGooglemaps::QGeoTiledMappingManagerEngineGooglemaps
     setTileFetcher(fetcher);
 
     if (parameters.contains(QStringLiteral("googlemaps.cachefolder")))
-        m_cacheDirectory = parameters.value(QStringLiteral("googlemaps.cachefolder")).toString();
-
-    const int szCache = 100 * 1024 * 1024;
-#if QT_VERSION < QT_VERSION_CHECK(5,6,0)
-    if (m_cacheDirectory.isEmpty())
-        m_cacheDirectory = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation) + QLatin1String("googlemaps");
-    QGeoTileCache *tileCache = createTileCacheWithDir(m_cacheDirectory);
-    if (tileCache)
-        tileCache->setMaxDiskUsage(szCache);
-#else
-    if (m_cacheDirectory.isEmpty())
+        m_cacheDirectory = parameters.value(QStringLiteral("googlemaps.cachefolder")).toString().toLatin1();
+    else
         m_cacheDirectory = QAbstractGeoTileCache::baseCacheDirectory() + QLatin1String("googlemaps");
-    QAbstractGeoTileCache *tileCache = new QGeoFileTileCache(m_cacheDirectory);
-    tileCache->setMaxDiskUsage(szCache);
-    setTileCache(tileCache);
-#endif
 
+    QAbstractGeoTileCache *tileCache = new QGeoFileTileCache(m_cacheDirectory);
+    tileCache->setMaxDiskUsage(100 * 1024 * 1024);
+    setTileCache(tileCache);
+
+    //    populateMapSchemes();
+    //    *error = QGeoServiceProvider::NoError;
+    //    errorString->clear();
     *error = QGeoServiceProvider::NoError;
     errorString->clear();
 }

@@ -1,4 +1,4 @@
-#include "qgeocodingmanagerenginegooglemaps.h"
+﻿#include "qgeocodingmanagerenginegooglemaps.h"
 #include "qgeocodereplygooglemaps.h"
 
 #include <QtCore/QVariantMap>
@@ -83,8 +83,9 @@ QGeoCodeReply *QGeoCodingManagerEngineGooglemaps::geocode(const QString &address
 
     QGeoCodeReplyGooglemaps *geocodeReply = new QGeoCodeReplyGooglemaps(reply, this);
 
-    connect(geocodeReply, &QGeoCodeReplyGooglemaps::finished, this, &QGeoCodingManagerEngineGooglemaps::replyFinished);
-    connect(geocodeReply, &QGeoCodeReplyGooglemaps::errorOccurred, this, &QGeoCodingManagerEngineGooglemaps::replyError);
+    connect(geocodeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
+    connect(geocodeReply, SIGNAL(error(QGeoCodeReply::Error,QString)),
+            this, SLOT(replyError(QGeoCodeReply::Error,QString)));
 
     return geocodeReply;
 }
@@ -109,8 +110,9 @@ QGeoCodeReply *QGeoCodingManagerEngineGooglemaps::reverseGeocode(const QGeoCoord
 
     QGeoCodeReplyGooglemaps *geocodeReply = new QGeoCodeReplyGooglemaps(reply, this);
 
-    connect(geocodeReply, &QGeoCodeReplyGooglemaps::finished, this, &QGeoCodingManagerEngineGooglemaps::replyFinished);
-    connect(geocodeReply, &QGeoCodeReplyGooglemaps::errorOccurred, this, &QGeoCodingManagerEngineGooglemaps::replyError);
+    connect(geocodeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
+    connect(geocodeReply, SIGNAL(error(QGeoCodeReply::Error,QString)),
+            this, SLOT(replyError(QGeoCodeReply::Error,QString)));
 
     return geocodeReply;
 }
@@ -126,5 +128,5 @@ void QGeoCodingManagerEngineGooglemaps::replyError(QGeoCodeReply::Error errorCod
 {
     QGeoCodeReply *reply = qobject_cast<QGeoCodeReply *>(sender());
     if (reply)
-        emit errorOccurred(reply, errorCode, errorString);
+        emit error(reply, errorCode, errorString);
 }

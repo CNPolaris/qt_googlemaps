@@ -1,4 +1,4 @@
-#ifndef QGEOSERVICEPROVIDERGOOGLEMAPS_H
+﻿#ifndef QGEOSERVICEPROVIDERGOOGLEMAPS_H
 #define QGEOSERVICEPROVIDERGOOGLEMAPS_H
 
 #include <QtCore/QObject>
@@ -8,7 +8,7 @@ class QGeoServiceProviderFactoryGooglemaps: public QObject, public QGeoServicePr
 {
     Q_OBJECT
     Q_INTERFACES(QGeoServiceProviderFactory)
-    Q_PLUGIN_METADATA(IID "org.qt-project.qt.geoservice.serviceproviderfactory/6.0"
+    Q_PLUGIN_METADATA(IID "org.qt-project.qt.geoservice.serviceproviderfactory/5.0"
                       FILE "googlemaps_plugin.json")
 
 public:
